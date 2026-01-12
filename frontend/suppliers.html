@@ -1,0 +1,51 @@
+<div id="suppliers-section" class="section">
+    <button id="add-supplier-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Supplier</button>
+    <table id="suppliers-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact Info</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="suppliers-list">
+        </tbody>
+    </table>
+</div>
+
+<div id="add-supplier-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Supplier</h2>
+        <form id="add-supplier-form">
+            <div class="form-group">
+                <label for="supplier_name">Name</label>
+                <input type="text" id="supplier_name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="supplier_contact_info">Contact Info</label>
+                <input type="text" id="supplier_contact_info" name="contact_info" placeholder="Email or phone">
+            </div>
+            <button type="submit" class="btn-primary">Add Supplier</button>
+        </form>
+    </div>
+</div>
+
+<div id="edit-supplier-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Supplier</h2>
+        <form id="edit-supplier-form">
+            <input type="hidden" id="edit_supplier_id" name="id">
+            <div class="form-group">
+                <label for="edit_supplier_name">Name</label>
+                <input type="text" id="edit_supplier_name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_supplier_contact_info">Contact Info</label>
+                <input type="text" id="edit_supplier_contact_info" name="contact_info" placeholder="Email or phone">
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>

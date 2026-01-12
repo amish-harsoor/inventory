@@ -1,0 +1,69 @@
+<div id="customers-section" class="section">
+    <button id="add-customer-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Customer</button>
+    <table id="customers-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="customers-list">
+        </tbody>
+    </table>
+</div>
+
+<div id="add-customer-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Customer</h2>
+        <form id="add-customer-form">
+            <div class="form-group">
+                <label for="customer_name">Name</label>
+                <input type="text" id="customer_name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="customer_email">Email</label>
+                <input type="email" id="customer_email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="customer_phone">Phone</label>
+                <input type="text" id="customer_phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="customer_address">Address</label>
+                <textarea id="customer_address" name="address"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Add Customer</button>
+        </form>
+    </div>
+</div>
+
+<div id="edit-customer-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Customer</h2>
+        <form id="edit-customer-form">
+            <input type="hidden" id="edit_customer_id" name="id">
+            <div class="form-group">
+                <label for="edit_customer_name">Name</label>
+                <input type="text" id="edit_customer_name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_customer_email">Email</label>
+                <input type="email" id="edit_customer_email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="edit_customer_phone">Phone</label>
+                <input type="text" id="edit_customer_phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="edit_customer_address">Address</label>
+                <textarea id="edit_customer_address" name="address"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>

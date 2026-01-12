@@ -1,0 +1,112 @@
+<div id="items-section" class="section active">
+    <button id="add-item-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Item</button>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search items...">
+        <select id="filter-category">
+            <option value="">All Categories</option>
+        </select>
+    </div>
+    <table id="items-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="items-list">
+        </tbody>
+    </table>
+</div>
+
+<div id="add-item-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Item</h2>
+        <form id="add-item-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description">
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" id="category" name="category">
+            </div>
+            <div class="form-group">
+                <label for="min_stock">Min Stock</label>
+                <input type="number" id="min_stock" name="min_stock">
+            </div>
+            <div class="form-group">
+                <label for="supplier_id">Supplier</label>
+                <select id="supplier-id" name="supplier_id">
+                    <option value="">Select Supplier</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="barcode">Barcode</label>
+                <input type="text" id="barcode" name="barcode">
+            </div>
+            <button type="submit" class="btn-primary">Add Item</button>
+        </form>
+    </div>
+</div>
+
+<div id="edit-item-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Item</h2>
+        <form id="edit-item-form">
+            <input type="hidden" id="edit_item_id" name="id">
+            <div class="form-group">
+                <label for="edit_name">Name</label>
+                <input type="text" id="edit_name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_description">Description</label>
+                <input type="text" id="edit_description" name="description">
+            </div>
+            <div class="form-group">
+                <label for="edit_quantity">Quantity</label>
+                <input type="number" id="edit_quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_price">Price</label>
+                <input type="number" step="0.01" id="edit_price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_category">Category</label>
+                <input type="text" id="edit_category" name="category">
+            </div>
+            <div class="form-group">
+                <label for="edit_min_stock">Min Stock</label>
+                <input type="number" id="edit_min_stock" name="min_stock">
+            </div>
+            <div class="form-group">
+                <label for="edit_supplier_id">Supplier</label>
+                <select id="edit_supplier_id" name="supplier_id">
+                    <option value="">Select Supplier</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="edit_barcode">Barcode</label>
+                <input type="text" id="edit_barcode" name="barcode">
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>
