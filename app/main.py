@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.database import engine
 from app.models import Base, ItemDB, SupplierDB, TransactionDB, CustomerDB, InvoiceDB, InvoiceLineDB
 from app.routers.inventory import router as inventory_router
@@ -69,13 +70,11 @@ app = FastAPI(lifespan=lifespan, title="Inventory Management API", version="1.0.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(inventory_router, prefix="/api", tags=["inventory"])
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to Inventory Management API"}
+app.include_router(inventory_router, prefix="/api", tags=["inventory"])

@@ -40,6 +40,7 @@ function setupEventListeners() {
     });
     document.getElementById('create-invoice-btn').addEventListener('click', () => {
         document.getElementById('create-invoice-modal').style.display = 'block';
+        updateSelects();
     });
     document.getElementById('add-supplier-btn').addEventListener('click', () => {
         document.getElementById('add-supplier-modal').style.display = 'block';
@@ -212,7 +213,7 @@ function updateSupplierSelects() {
 }
 
 function updateCustomerSelects() {
-    const selects = document.querySelectorAll('#customer-id');
+    const selects = document.querySelectorAll('#invoice-customer-id, #customer-id');
     selects.forEach(select => {
         select.innerHTML = '<option value="">Select Customer</option>';
         allCustomers.forEach(customer => {
@@ -225,7 +226,7 @@ function updateCustomerSelects() {
 }
 
 function updateItemSelects() {
-    const selects = document.querySelectorAll('#item-id');
+    const selects = document.querySelectorAll('.invoice-item-select, #item-id');
     selects.forEach(select => {
         select.innerHTML = '<option value="">Select Item</option>';
         allItems.forEach(item => {
