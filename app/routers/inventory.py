@@ -88,11 +88,13 @@ async def update_customer(customer_id: int, customer_update: Customer, db: Async
     if not customer_db:
         raise HTTPException(status_code=404, detail="Customer not found")
     customer_db.name = customer_update.name
+    customer_db.phone = customer_update.phone
+    customer_db.address = customer_update.address
     customer_db.contact_info = customer_update.contact_info
     db.add(customer_db)
     await db.commit()
     await db.refresh(customer_db)
-    return Customer(id=customer_db.id, name=customer_db.name, contact_info=customer_db.contact_info)
+    return Customer(id=customer_db.id, name=customer_db.name, phone=customer_db.phone, address=customer_db.address, contact_info=customer_db.contact_info)
 
 @router.delete("/customers/{customer_id}")
 async def delete_customer(customer_id: int, db: AsyncSession = Depends(get_db)):

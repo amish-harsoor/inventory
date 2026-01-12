@@ -19,6 +19,12 @@ async function fetchCustomers() {
     return await response.json();
 }
 
+async function fetchInvoices() {
+    const response = await fetch(`${API_BASE}/invoices`);
+    if (!response.ok) throw new Error('Failed to fetch invoices');
+    return await response.json();
+}
+
 async function createItem(item) {
     const response = await fetch(`${API_BASE}/items`, {
         method: 'POST',
@@ -79,6 +85,23 @@ async function createSupplier(supplier) {
     return await response.json();
 }
 
+async function updateSupplier(supplierId, supplier) {
+    const response = await fetch(`${API_BASE}/suppliers/${supplierId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(supplier)
+    });
+    if (!response.ok) throw new Error('Failed to update supplier');
+    return await response.json();
+}
+
+async function deleteSupplier(supplierId) {
+    const response = await fetch(`${API_BASE}/suppliers/${supplierId}`, {
+        method: 'DELETE'
+    });
+    if (!response.ok) throw new Error('Failed to delete supplier');
+}
+
 async function createCustomer(customer) {
     const response = await fetch(`${API_BASE}/customers`, {
         method: 'POST',
@@ -87,4 +110,21 @@ async function createCustomer(customer) {
     });
     if (!response.ok) throw new Error('Failed to create customer');
     return await response.json();
+}
+
+async function updateCustomer(customerId, customer) {
+    const response = await fetch(`${API_BASE}/customers/${customerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(customer)
+    });
+    if (!response.ok) throw new Error('Failed to update customer');
+    return await response.json();
+}
+
+async function deleteCustomer(customerId) {
+    const response = await fetch(`${API_BASE}/customers/${customerId}`, {
+        method: 'DELETE'
+    });
+    if (!response.ok) throw new Error('Failed to delete customer');
 }
