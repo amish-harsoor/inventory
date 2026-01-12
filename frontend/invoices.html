@@ -1,0 +1,47 @@
+<div id="invoices-section" class="section">
+    <button id="create-invoice-btn" class="btn-primary"><i class="fas fa-plus"></i> Create Invoice</button>
+    <table id="invoices-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="invoices-list">
+        </tbody>
+    </table>
+</div>
+
+<div id="create-invoice-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create Invoice</h2>
+        <form id="create-invoice-form">
+            <div class="form-group">
+                <label for="invoice-customer-id">Customer</label>
+                <select id="invoice-customer-id" name="customer_id">
+                    <option value="">Select Customer</option>
+                </select>
+            </div>
+            <div id="invoice-items-container">
+                <div class="invoice-item">
+                    <div class="form-group">
+                        <label for="item_id_1">Item</label>
+                        <select id="item_id_1" name="item_id_1" class="invoice-item-select" required>
+                            <option value="">Select Item</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice_quantity_1">Quantity</label>
+                        <input type="number" id="invoice_quantity_1" name="invoice_quantity_1" class="invoice-item-quantity" required>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="add-invoice-item-btn" class="btn-secondary">Add Another Item</button>
+            <button type="submit" class="btn-primary">Create Invoice</button>
+        </form>
+    </div>
+</div>

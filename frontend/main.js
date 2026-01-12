@@ -1,5 +1,7 @@
 // Main entry point
 document.addEventListener('DOMContentLoaded', () => {
     initUI();
-    loadData();
+    loadData().then(() => {
+        loadPage('items');
+    });
 });

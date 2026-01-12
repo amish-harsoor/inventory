@@ -5,9 +5,6 @@ let allCustomers = [];
 let allInvoices = [];
 
 // DOM elements
-const itemsList = document.getElementById('items-list');
-const searchInput = document.getElementById('search-input');
-const filterCategory = document.getElementById('filter-category');
 
 // Initialize UI
 function initUI() {
@@ -19,64 +16,94 @@ function setupEventListeners() {
     // Navigation
     document.getElementById('nav-items').addEventListener('click', (e) => {
         e.preventDefault();
-        showSection('items-section');
+        loadPage('items');
     });
     document.getElementById('nav-invoices').addEventListener('click', (e) => {
         e.preventDefault();
-        showSection('invoices-section');
+        loadPage('invoices');
     });
     document.getElementById('nav-suppliers').addEventListener('click', (e) => {
         e.preventDefault();
-        showSection('suppliers-section');
+        loadPage('suppliers');
     });
     document.getElementById('nav-customers').addEventListener('click', (e) => {
         e.preventDefault();
-        showSection('customers-section');
+        loadPage('customers');
     });
+}
 
-    // Modals
+function initItemsPage() {
     document.getElementById('add-item-btn').addEventListener('click', () => {
         document.getElementById('add-item-modal').style.display = 'block';
     });
+    document.getElementById('add-item-form').addEventListener('submit', handleAddItem);
+    document.getElementById('edit-item-form').addEventListener('submit', handleEditItemForm);
+    document.getElementById('search-input').addEventListener('input', filterItems);
+    document.getElementById('filter-category').addEventListener('change', filterItems);
+    renderItems(allItems);
+    updateCategories();
+    updateSelects();
+}
+
+function initInvoicesPage() {
     document.getElementById('create-invoice-btn').addEventListener('click', () => {
         document.getElementById('create-invoice-modal').style.display = 'block';
         updateSelects();
     });
+    document.getElementById('create-invoice-form').addEventListener('submit', handleCreateInvoice);
+    document.getElementById('add-invoice-item-btn').addEventListener('click', addInvoiceItem);
+    renderInvoices(allInvoices);
+}
+
+function initSuppliersPage() {
     document.getElementById('add-supplier-btn').addEventListener('click', () => {
         document.getElementById('add-supplier-modal').style.display = 'block';
     });
+    document.getElementById('add-supplier-form').addEventListener('submit', handleAddSupplier);
+    document.getElementById('edit-supplier-form').addEventListener('submit', handleEditSupplierForm);
+    renderSuppliers(allSuppliers);
+}
+
+function initCustomersPage() {
     document.getElementById('add-customer-btn').addEventListener('click', () => {
         document.getElementById('add-customer-modal').style.display = 'block';
     });
+    document.getElementById('add-customer-form').addEventListener('submit', handleAddCustomer);
+    document.getElementById('edit-customer-form').addEventListener('submit', handleEditCustomerForm);
+    renderCustomers(allCustomers);
+}
 
-    // Close modals
+function setupModalCloseButtons() {
     document.querySelectorAll('.close').forEach(close => {
         close.addEventListener('click', () => {
             close.closest('.modal').style.display = 'none';
         });
     });
-
-    // Search and filter
-    searchInput.addEventListener('input', filterItems);
-    filterCategory.addEventListener('change', filterItems);
-
-    // Forms
-    document.getElementById('add-item-form').addEventListener('submit', handleAddItem);
-    document.getElementById('edit-item-form').addEventListener('submit', handleEditItemForm);
-    document.getElementById('create-invoice-form').addEventListener('submit', handleCreateInvoice);
-    document.getElementById('add-invoice-item-btn').addEventListener('click', addInvoiceItem);
-    document.getElementById('add-supplier-form').addEventListener('submit', handleAddSupplier);
-    document.getElementById('edit-supplier-form').addEventListener('submit', handleEditSupplierForm);
-    document.getElementById('add-customer-form').addEventListener('submit', handleAddCustomer);
-    document.getElementById('edit-customer-form').addEventListener('submit', handleEditCustomerForm);
 }
 
-// Show section
-function showSection(sectionId) {
-    document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-    document.querySelector(`#nav-${sectionId.replace('-section', '')}`).classList.add('active');
+// Load page content
+async function loadPage(page) {
+    const contentDiv = document.querySelector('.content');
+    try {
+        const response = await fetch(`${page}.html`);
+        contentDiv.innerHTML = await response.text();
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        document.querySelector(`#nav-${page}`).classList.add('active');
+
+        if (page === 'items') {
+            initItemsPage();
+        } else if (page === 'invoices') {
+            initInvoicesPage();
+        } else if (page === 'suppliers') {
+            initSuppliersPage();
+        } else if (page === 'customers') {
+            initCustomersPage();
+        }
+        setupModalCloseButtons();
+    } catch (error) {
+        console.error(`Error loading ${page}:`, error);
+        contentDiv.innerHTML = `<p>Error loading page. Please try again.</p>`;
+    }
 }
 
 // Load data
@@ -88,12 +115,6 @@ async function loadData() {
             fetchCustomers(),
             fetchInvoices()
         ]);
-        renderItems(allItems);
-        renderSuppliers(allSuppliers);
-        renderCustomers(allCustomers);
-        renderInvoices(allInvoices);
-        updateCategories();
-        updateSelects();
     } catch (error) {
         console.error('Error loading data:', error);
         alert('Error loading data');
@@ -102,23 +123,26 @@ async function loadData() {
 
 // Render items table
 function renderItems(items) {
-    itemsList.innerHTML = '';
-    items.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${item.name}</td>
-            <td>${item.description || ''}</td>
-            <td>${item.quantity}</td>
-            <td>₹${item.price}</td>
-            <td>${item.category || ''}</td>
-            <td class="actions">
-                <button class="btn-secondary" onclick="handleSellItem(${item.id}, '${item.name}')"><i class="fas fa-shopping-cart"></i></button>
-                <button class="btn-secondary" onclick="handleEditItem(${item.id})"><i class="fas fa-edit"></i></button>
-                <button class="btn-danger" onclick="handleDeleteItem(${item.id})"><i class="fas fa-trash"></i></button>
-            </td>
-        `;
-        itemsList.appendChild(row);
-    });
+    const itemsList = document.getElementById('items-list');
+    if (itemsList) {
+        itemsList.innerHTML = '';
+        items.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.description || ''}</td>
+                <td>${item.quantity}</td>
+                <td>₹${item.price}</td>
+                <td>${item.category || ''}</td>
+                <td class="actions">
+                    <button class="btn-secondary" onclick="handleSellItem(${item.id}, '${item.name}')"><i class="fas fa-shopping-cart"></i></button>
+                    <button class="btn-secondary" onclick="handleEditItem(${item.id})"><i class="fas fa-edit"></i></button>
+                    <button class="btn-danger" onclick="handleDeleteItem(${item.id})"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            itemsList.appendChild(row);
+        });
+    }
 }
 
 // Render suppliers list
@@ -170,17 +194,22 @@ function renderCustomers(customers) {
 // Update categories filter
 function updateCategories() {
     const categories = [...new Set(allItems.map(item => item.category).filter(cat => cat))];
-    filterCategory.innerHTML = '<option value="">All Categories</option>';
-    categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat;
-        filterCategory.appendChild(option);
-    });
+    const filterCategory = document.getElementById('filter-category');
+    if (filterCategory) {
+        filterCategory.innerHTML = '<option value="">All Categories</option>';
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            filterCategory.appendChild(option);
+        });
+    }
 }
 
 // Filter items
 function filterItems() {
+    const searchInput = document.getElementById('search-input');
+    const filterCategory = document.getElementById('filter-category');
     const searchTerm = searchInput.value.toLowerCase();
     const categoryFilter = filterCategory.value;
     const filtered = allItems.filter(item => {
