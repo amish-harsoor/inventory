@@ -4,50 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Inventory Management System</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Items</h2>
-            <ul id="items-list"></ul>
-        </section>
-        <section>
-            <h2>Add Item</h2>
+    <div class="sidebar">
+        <h2><i class="fas fa-boxes"></i> Inventory</h2>
+        <ul>
+            <li><a href="#" id="nav-items" class="active"><i class="fas fa-list"></i> Items</a></li>
+            <li><a href="#" id="nav-invoices"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+            <li><a href="#" id="nav-suppliers"><i class="fas fa-truck"></i> Suppliers</a></li>
+            <li><a href="#" id="nav-customers"><i class="fas fa-users"></i> Customers</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Inventory Management System</h1>
+            <button id="add-item-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Item</button>
+        </header>
+        <div class="content">
+            <div id="items-section" class="section active">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search items...">
+                    <select id="filter-category">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <table id="items-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items-list">
+                    </tbody>
+                </table>
+            </div>
+            <div id="invoices-section" class="section">
+                <button id="create-invoice-btn" class="btn-primary"><i class="fas fa-plus"></i> Create Invoice</button>
+                <div id="invoices-list"></div>
+            </div>
+            <div id="suppliers-section" class="section">
+                <button id="add-supplier-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Supplier</button>
+                <div id="suppliers-list"></div>
+            </div>
+            <div id="customers-section" class="section">
+                <button id="add-customer-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Customer</button>
+                <div id="customers-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="add-item-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Item</h2>
             <form id="add-item-form">
-                <input type="text" name="name" placeholder="Name" required>
-                <input type="text" name="description" placeholder="Description">
-                <input type="number" name="quantity" placeholder="Quantity" required>
-                <input type="number" step="0.01" name="price" placeholder="Price" required>
-                <input type="text" name="category" placeholder="Category">
-                <input type="number" name="min_stock" placeholder="Min Stock">
-                <select id="supplier-id" name="supplier_id">
-                    <option value="">Select Supplier</option>
-                </select>
-                <input type="text" name="barcode" placeholder="Barcode">
-                <button type="submit">Add Item</button>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" step="0.01" id="price" name="price" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category">
+                </div>
+                <div class="form-group">
+                    <label for="min_stock">Min Stock</label>
+                    <input type="number" id="min_stock" name="min_stock">
+                </div>
+                <div class="form-group">
+                    <label for="supplier_id">Supplier</label>
+                    <select id="supplier-id" name="supplier_id">
+                        <option value="">Select Supplier</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="barcode">Barcode</label>
+                    <input type="text" id="barcode" name="barcode">
+                </div>
+                <button type="submit" class="btn-primary">Add Item</button>
             </form>
-        </section>
-        <section>
+        </div>
+    </div>
+
+    <div id="create-invoice-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
             <h2>Create Invoice</h2>
             <form id="create-invoice-form">
-                <select id="customer-id" name="customer_id">
-                    <option value="">Select Customer</option>
-                </select>
-                <select id="item-id" name="item_id" required>
-                    <option value="">Select Item</option>
-                </select>
-                <input type="number" name="invoice_quantity" placeholder="Quantity" required>
-                <button type="submit">Create Invoice</button>
+                <div class="form-group">
+                    <label for="customer_id">Customer</label>
+                    <select id="customer-id" name="customer_id">
+                        <option value="">Select Customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="item_id">Item</label>
+                    <select id="item-id" name="item_id" required>
+                        <option value="">Select Item</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="invoice_quantity">Quantity</label>
+                    <input type="number" id="invoice_quantity" name="invoice_quantity" required>
+                </div>
+                <button type="submit" class="btn-primary">Create Invoice</button>
             </form>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 Inventory Management Frontend</p>
-    </footer>
-    <script src="script.js"></script>
+        </div>
+    </div>
+
+    <div id="add-supplier-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Supplier</h2>
+            <form id="add-supplier-form">
+                <div class="form-group">
+                    <label for="supplier_name">Name</label>
+                    <input type="text" id="supplier_name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplier_contact_info">Contact Info</label>
+                    <input type="text" id="supplier_contact_info" name="contact_info" placeholder="Email or phone">
+                </div>
+                <button type="submit" class="btn-primary">Add Supplier</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-customer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Customer</h2>
+            <form id="add-customer-form">
+                <div class="form-group">
+                    <label for="customer_name">Name</label>
+                    <input type="text" id="customer_name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer_email">Email</label>
+                    <input type="email" id="customer_email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="customer_phone">Phone</label>
+                    <input type="text" id="customer_phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="customer_address">Address</label>
+                    <textarea id="customer_address" name="address"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Add Customer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
