@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Add Supplier{% endblock %}
+{% block content %}
+<h1>Add New Supplier</h1>
+<form method="post">
+    <label>Name: <input type="text" name="name" required></label>
+    <label>Contact Info: <input type="text" name="contact_info" required></label>
+    <button type="submit">Add Supplier</button>
+</form>
+{% endblock %}

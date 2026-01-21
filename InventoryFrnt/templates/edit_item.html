@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Edit Item{% endblock %}
+{% block content %}
+<h1>Edit Item</h1>
+<form method="post">
+    <label>Name: <input type="text" name="name" value="{{ item.name }}" required></label>
+    <label>Description: <textarea name="description" required>{{ item.description }}</textarea></label>
+    <label>Quantity: <input type="number" name="quantity" value="{{ item.quantity }}" required></label>
+    <label>Price: <input type="number" step="0.01" name="price" value="{{ item.price }}" required></label>
+    <label>Category: <input type="text" name="category" value="{{ item.category }}"></label>
+    <label>Min Stock: <input type="number" name="min_stock" value="{{ item.min_stock }}" required></label>
+    <label>Supplier:
+        <select name="supplier_id" required>
+            {% for supplier in suppliers %}
+            <option value="{{ supplier.id }}" {% if supplier.id == item.supplier_id %}selected{% endif %}>{{ supplier.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Barcode: <input type="text" name="barcode" value="{{ item.barcode }}"></label>
+    <button type="submit">Update Item</button>
+</form>
+{% endblock %}

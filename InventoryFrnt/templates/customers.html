@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Customers{% endblock %}
+{% block content %}
+<h1>Inventory Management</h1>
+<nav style="background-color: #6c757d; color: white; padding: 0.5rem; margin-bottom: 1rem; border-radius: 4px;">
+    <a href="{{ url_for('items') }}" style="color: white; margin: 0 1rem;">Items</a>
+    <a href="{{ url_for('suppliers') }}" style="color: white; margin: 0 1rem;">Suppliers</a>
+    <a href="{{ url_for('customers') }}" style="color: white; margin: 0 1rem;">Customers</a>
+    <a href="{{ url_for('reports') }}" style="color: white; margin: 0 1rem;">Reports</a>
+    <a href="{{ url_for('transactions') }}" style="color: white; margin: 0 1rem;">Transactions</a>
+</nav>
+<h2>Customers</h2>
+<a href="{{ url_for('add_customer') }}" class="btn btn-edit" style="margin-bottom: 1rem; display: inline-block;">Add Customer</a>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Contact Info</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.phone }}</td>
+            <td>{{ customer.address }}</td>
+            <td>{{ customer.contact_info }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

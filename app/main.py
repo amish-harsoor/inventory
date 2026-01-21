@@ -61,6 +61,36 @@ async def lifespan(app: FastAPI):
             ]
             items = [ItemDB(**data) for data in items_data]
             session.add_all(items)
+
+            # Add customers
+            customers_data = [
+                {"name": "John Doe", "contact_info": "john@example.com", "phone": "1234567890", "address": "123 Main St"},
+                {"name": "Jane Smith", "contact_info": "jane@example.com", "phone": "0987654321", "address": "456 Elm St"},
+                {"name": "Bob Johnson", "contact_info": "bob@example.com", "phone": "5555555555", "address": "789 Oak St"}
+            ]
+            customers = [CustomerDB(**data) for data in customers_data]
+            session.add_all(customers)
+            await session.flush()
+            customer_ids = [c.id for c in customers]
+
+            # Add invoices
+            invoices_data = [
+                {"customer_id": customer_ids[0], "total_amount": 500.0, "date": date.today(), "status": "paid"},
+                {"customer_id": customer_ids[1], "total_amount": 750.0, "date": date.today(), "status": "pending"}
+            ]
+            invoices = [InvoiceDB(**data) for data in invoices_data]
+            session.add_all(invoices)
+            await session.flush()
+            invoice_ids = [i.id for i in invoices]
+
+            # Add invoice lines
+            invoice_lines_data = [
+                {"invoice_id": invoice_ids[0], "item_id": 1, "quantity": 2, "price": 120.0},  # Basmati Rice
+                {"invoice_id": invoice_ids[1], "item_id": 2, "quantity": 1, "price": 80.0}   # Toor Dal
+            ]
+            invoice_lines = [InvoiceLineDB(**data) for data in invoice_lines_data]
+            session.add_all(invoice_lines)
+
             await session.commit()
 
     yield
@@ -75,6 +105,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
-
 app.include_router(inventory_router, prefix="/api", tags=["inventory"])
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

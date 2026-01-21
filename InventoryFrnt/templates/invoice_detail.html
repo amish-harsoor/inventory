@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Invoice Detail{% endblock %}
+{% block content %}
+<style>
+    .invoice-container { max-width: 800px; margin: 0 auto; padding: 15px; border: 1px solid #ddd; background: white; font-family: Arial, sans-serif; font-size: 12px; line-height: 1.4; }
+    .invoice-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+    .company-info { text-align: left; font-size: 11px; }
+    .invoice-info { text-align: right; font-size: 11px; }
+    .customer-info { margin-bottom: 15px; font-size: 11px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; border: 1px solid #000; }
+    th, td { padding: 8px; text-align: left; border: 1px solid #000; }
+    th { background-color: #e9ecef; font-weight: bold; }
+    .total { font-weight: bold; }
+    .print-btn { background-color: #007bff; color: white; padding: 8px 16px; border: none; cursor: pointer; margin-top: 15px; font-size: 11px; }
+    .print-btn:hover { background-color: #0056b3; }
+    @media print {
+        body { margin: 0; }
+        body * { visibility: hidden; }
+        .invoice-container, .invoice-container * { visibility: visible; }
+        .invoice-container { position: absolute; left: 0; top: 0; margin: 0; padding: 0; width: 100%; max-width: none; box-shadow: none; border: none; }
+        .print-btn { display: none; }
+    }
+</style>
+<div class="invoice-container">
+    <div class="invoice-header">
+        <div class="company-info">
+            <h2>Sharma Enterprises</h2>
+            <p>45 MG Road<br>Bangalore, Karnataka 560001<br>Phone: +91-9876543210<br>Email: info@sharmaenterprises.com</p>
+        </div>
+        <div class="invoice-info">
+            <h2>Invoice</h2>
+            <p><strong>Invoice #:</strong> INV-{{ "%04d"|format(invoice['id']) }}</p>
+            <p><strong>Date:</strong> {{ invoice['date'] | localtime }}</p>
+            <p><strong>Due Date:</strong> {{ due_date | localtime }}</p>
+            <p><strong>Status:</strong> {{ invoice['status'] }}</p>
+        </div>
+    </div>
+    <div class="customer-info">
+        <h3>Bill To:</h3>
+        <p><strong>{{ customer['name'] if customer else 'Walk-in Customer' }}</strong></p>
+        {% if customer %}
+        {% if customer['phone'] %}
+        <p>Phone: {{ customer['phone'] }}</p>
+        {% endif %}
+        {% if customer['address'] %}
+        <p>Address: {{ customer['address'] }}</p>
+        {% endif %}
+        {% if customer['contact_info'] %}
+        <p>Email: {{ customer['contact_info'] }}</p>
+        {% endif %}
+        {% endif %}
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Sl No</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in lines %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ line['item_name'] }}</td>
+                <td>{{ line['quantity'] }}</td>
+                <td>₹{{ "%.2f"|format(line['price']) }}</td>
+                <td>₹{{ "%.2f"|format(line['quantity'] * line['price']) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Subtotal</td>
+                <td>₹{{ "%.2f"|format(invoice['total_amount']) }}</td>
+            </tr>
+            <tr>
+                <td colspan="4">GST (18%)</td>
+                <td>₹{{ "%.2f"|format(invoice['total_amount'] * 0.18) }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="total">Total Amount</td>
+                <td class="total">₹{{ "%.2f"|format(invoice['total_amount'] * 1.18) }}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 11px;">
+        <div>
+            <h4 style="margin: 0; font-size: 12px;">Payment Terms</h4>
+            <p style="margin: 5px 0;">Payment due within 30 days of invoice date.</p>
+            <h4 style="margin: 10px 0 0 0; font-size: 12px;">Bank Details</h4>
+            <p style="margin: 5px 0;">Bank: State Bank of India<br>Account Name: Sharma Enterprises<br>Account Number: 1234567890<br>IFSC: SBIN0001234</p>
+        </div>
+        <div>
+            <h4 style="margin: 0; font-size: 12px;">Terms & Conditions</h4>
+            <p style="margin: 5px 0;">1. Goods once sold will not be taken back.<br>2. Interest at 2% per month on overdue payments.<br>3. Disputes subject to Bangalore jurisdiction.</p>
+        </div>
+    </div>
+    <div style="margin-top: 30px; text-align: right; font-size: 11px;">
+        <p style="margin: 0;">Authorized Signature</p>
+        <br>
+        ________________________
+    </div>
+    <button class="print-btn" onclick="window.print()">Print Invoice</button>
+</div>
+{% endblock %}

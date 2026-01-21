@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Create Invoice{% endblock %}
+{% block content %}
+<h1>Billing</h1>
+<nav style="background-color: #6c757d; color: white; padding: 0.5rem; margin-bottom: 1rem; border-radius: 4px;">
+    <a href="{{ url_for('invoices') }}" style="color: white; margin: 0 1rem;">Invoices</a>
+    <a href="{{ url_for('create_invoice') }}" style="color: white; margin: 0 1rem;">Create Invoice</a>
+    <a href="{{ url_for('customers') }}" style="color: white; margin: 0 1rem;">Customers</a>
+    <a href="{{ url_for('reports') }}" style="color: white; margin: 0 1rem;">Reports</a>
+</nav>
+<h2>Create New Invoice</h2>
+<form method="post">
+    <label>Customer (optional):<br>
+        <select name="customer_id" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; margin-bottom: 1rem;">
+            <option value="">Select Customer</option>
+            {% for customer in customers %}
+            <option value="{{ customer.id }}">{{ customer.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <h3>Items:</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
+        <thead>
+            <tr>
+                <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Item</th>
+                <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Stock</th>
+                <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Price</th>
+                <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #ddd;">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ item.name }}</td>
+                <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ item.quantity }}</td>
+                <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">₹{{ item.price }}</td>
+                <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">
+                    <input type="number" name="item_{{ item.id }}_quantity" min="0" max="{{ item.quantity }}" value="0" style="width: 60px; padding: 0.3rem; border: 1px solid #ccc; border-radius: 4px;">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Create Invoice</button>
+</form>
+{% endblock %}
