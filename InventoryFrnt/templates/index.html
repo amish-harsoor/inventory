@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block content %}
-<h1>Welcome to Inventory Management System</h1>
-<div style="text-align: center; margin-top: 2rem;">
-    <a href="{{ url_for('items') }}" style="display: inline-block; padding: 1rem 2rem; background-color: #007bff; color: white; text-decoration: none; border-radius: 8px; font-size: 1.2rem; margin: 1rem;">Check Inventory</a>
-    <a href="{{ url_for('invoices') }}" style="display: inline-block; padding: 1rem 2rem; background-color: #28a745; color: white; text-decoration: none; border-radius: 8px; font-size: 1.2rem; margin: 1rem;">Billing</a>
-</div>
-{% endblock %}
